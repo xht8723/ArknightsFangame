@@ -8,7 +8,8 @@ public class Fang : Unit
     public override GameObject deploy(GameObject position)
     {
         GameObject Fang = Instantiate(gameObject);
-        Fang.GetComponent<Fang>().currentPosition = position;
+        Fang datas = Fang.GetComponent<Fang>();
+        datas.currentPosition = position;
         return Fang;
     }
 
@@ -22,6 +23,8 @@ public class Fang : Unit
         return;
     }
 
+
+    
     /*
     int layerMask = 1 << 3;
     private Renderer changedRenderer;

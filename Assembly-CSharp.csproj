@@ -56,12 +56,12 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BattleGridsGen.cs" />
-    <Compile Include="Assets\Scripts\Units\Unit.cs" />
-    <Compile Include="Assets\Scripts\Units\status.cs" />
-    <Compile Include="Assets\Scripts\Units\Fang.cs" />
     <Compile Include="Assets\Scripts\Units\EnemyRanger.cs" />
+    <Compile Include="Assets\Scripts\Units\status.cs" />
     <Compile Include="Assets\Scripts\LevelController.cs" />
+    <Compile Include="Assets\Scripts\BattleGridsGen.cs" />
+    <Compile Include="Assets\Scripts\Units\Fang.cs" />
+    <Compile Include="Assets\Scripts\Units\Unit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

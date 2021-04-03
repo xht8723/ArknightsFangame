@@ -22,7 +22,8 @@ public class EnemyRanger : Unit
     public override GameObject deploy(GameObject position)
     {
         GameObject EnemyRanger = Instantiate(gameObject);
-        EnemyRanger.GetComponent<EnemyRanger>().currentPosition = position;
+        EnemyRanger ER = EnemyRanger.GetComponent<EnemyRanger>();
+        ER.currentPosition = position;
         return EnemyRanger;
     }
 

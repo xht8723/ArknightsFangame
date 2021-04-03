@@ -9,10 +9,12 @@ public abstract class Unit : MonoBehaviour
     public event Action<Unit, Unit> onAttackEvent;
     public event Action<Unit, Unit> onReceiveDmgEvent;
     protected event Action onUpdateEvent;
+    protected event Action onMoveEvent;
     public int atkRange;
     public int moveRange;
     public GameObject currentPosition;
     public GameObject lastPosition;
+
 
     bool isMoving = false;
 
@@ -41,6 +43,14 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    public void MoveEvent()
+    {
+        if(onMoveEvent != null)
+        {
+            onMoveEvent();
+        }
+    }
+
     public abstract GameObject deploy(GameObject position);
 
     protected abstract void OnMouseOver();
@@ -53,6 +63,7 @@ public abstract class Unit : MonoBehaviour
         {
             onUpdateEvent -= snapToFloor;
             onUpdateEvent += move;
+            onMoveEvent += moveRestrcition;
             isMoving = true;
         }
     }
@@ -61,6 +72,7 @@ public abstract class Unit : MonoBehaviour
     private RaycastHit hit;
     protected virtual void move()
     {
+        MoveEvent();
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("floor")))
         {
@@ -72,6 +84,7 @@ public abstract class Unit : MonoBehaviour
                 currentPosition = hit.transform.gameObject;
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
+                onMoveEvent -= moveRestrcition;
                 isMoving = false;
                 return;
             }
@@ -80,10 +93,47 @@ public abstract class Unit : MonoBehaviour
             {
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
+                onMoveEvent -= moveRestrcition;
                 isMoving = false;
                 return;
             }
         }
+    }
+
+    protected virtual void moveRestrcition()
+    {
+
+    }
+
+    protected virtual List<GameObject> restriction()
+    {
+        GameObject[,,] matrix = BattleGridsGen.battleGridsGen.gridMatrix;
+        foreach(GameObject x in matrix)
+        {
+
+        }
+
+        return null;
+    }
+
+    protected virtual List<GameObject> traceViableGrids(GameObject[,,] matrix)
+    {
+        List<GameObject> viable = new List<GameObject>();
+        int[] currentIndex = BattleGridsGen.returnMatrixIndex(currentPosition);
+
+        for (int i = 0; i < BattleGridsGen.battleGridsGen.col; i++)
+        {
+            for(int j = 0; j < BattleGridsGen.battleGridsGen.row; j++)
+            {
+                int[] index = BattleGridsGen.returnMatrixIndex(matrix[i, j, 0]);
+                if(Math.Abs((index[0] - currentIndex[0])) + Math.Abs((index[1] - currentIndex[1])) <= moveRange)
+                {
+                    viable.Add(matrix[i, j, 0]);
+                }
+
+            }
+        }
+        return viable;
     }
 
     public abstract void attack(GameObject target);

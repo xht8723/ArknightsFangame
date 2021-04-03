@@ -125,8 +125,8 @@
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\inspectors\EditorClipFactory.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\treeview\ManipulationsClips.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\Manipulators\Sequence\Jog.cs" />
-    <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\treeview\Drawers\InfiniteTrackDrawer.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\Shortcuts.cs" />
+    <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\treeview\Drawers\InfiniteTrackDrawer.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\Window\TimelineWindowTimeControl.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\Window\TimelineWindow_EditorCallbacks.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.5.2\Editor\Utilities\Scopes\IndentLevelScope.cs" />

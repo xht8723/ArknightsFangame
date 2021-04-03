@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BattleGridsGen : MonoBehaviour
 {
+
+    public static BattleGridsGen battleGridsGen;
     public int col;
     public int row;
     public int enemyFieldNum;
@@ -17,8 +20,14 @@ public class BattleGridsGen : MonoBehaviour
     public List<GameObject> enemyGrids = new List<GameObject>();
     public List<GameObject> allyGrids = new List<GameObject>();
 
+    public GameObject[,,] gridMatrix;
+
     public GameObject Fang;
 
+    private void Awake()
+    {
+        battleGridsGen = this;
+    }
 
     void Start()
     {
@@ -26,15 +35,20 @@ public class BattleGridsGen : MonoBehaviour
         placeFang();
     }
 
-    // Update is called once per frame
-    void Update()
+    public static int[] returnMatrixIndex(GameObject grid)
     {
-        
+        int row = BattleGridsGen.battleGridsGen.row;
+        int col = BattleGridsGen.battleGridsGen.col;
+
+        string temp = grid.name.Split('d')[1];
+        int index = Int32.Parse(temp);
+        int[] returns = {index%row, index/row};
+        return returns;
     }
 
     private void placeFang()
     {
-        Fang.GetComponent<Fang>().deploy(allyGrids[7]);
+        Fang.GetComponent<Fang>().deploy(gridMatrix[2,3,0]);
     }
 
     private List<GameObject> gridGen() {
@@ -73,6 +87,37 @@ public class BattleGridsGen : MonoBehaviour
         allyGridHolder.SetParent(gridHolder);
         enemyGridHolder.SetParent(gridHolder);
 
+        gridMatrixGen();
+
         return grids;
+    }
+
+    private GameObject[,,] gridMatrixGen()
+    {
+        gridMatrix = new GameObject[col, row, 4];
+
+        int counter = 0;
+
+        for (int i = 0; i < col; i++)
+        {
+            for(int j = 0; j < row; j++)
+            {
+                gridMatrix[i,j,0] = allyGrids[counter];
+                counter++;
+            }
+        }
+
+        counter = 0;
+
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                gridMatrix[i,j,1] = enemyGrids[counter];
+                counter++;
+            }
+        }
+
+        return gridMatrix;
     }
 }
