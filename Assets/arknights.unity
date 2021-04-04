@@ -236,16 +236,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af852e08c24fed4eb47708c711db1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: 4
-  row: 4
-  enemyFieldNum: 0
+  col: 10
+  row: 10
   gridSizeCoe: 5
   allyFloor: {fileID: 9195693625673077827, guid: e372128bea25757429b7c0e7d9cba817, type: 3}
   enemyFloor: {fileID: 2489505028180426284, guid: 72da8ebc92c179d418f29cda8ef6cd79, type: 3}
   distance: 2
   grids: []
-  enemyGrids: []
-  allyGrids: []
   Fang: {fileID: 2405731639392823996, guid: 8dbab3e49db0db34b95736362d9cb008, type: 3}
 --- !u!4 &351246962
 Transform:

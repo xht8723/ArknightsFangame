@@ -15,7 +15,7 @@ public abstract class Unit : MonoBehaviour
     public GameObject currentPosition;
     public GameObject lastPosition;
 
-
+    public List<GameObject> viableRoutes;
     bool isMoving = false;
 
 
@@ -63,8 +63,8 @@ public abstract class Unit : MonoBehaviour
         {
             onUpdateEvent -= snapToFloor;
             onUpdateEvent += move;
-            onMoveEvent += moveRestrcition;
             isMoving = true;
+            MoveEvent();
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class Unit : MonoBehaviour
     private RaycastHit hit;
     protected virtual void move()
     {
-        MoveEvent();
+        
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("floor")))
         {
@@ -80,12 +80,21 @@ public abstract class Unit : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
+                if(illegalMove(hit))
+                {
+                    onUpdateEvent -= move;
+                    onUpdateEvent += snapToFloor;
+                    isMoving = false;
+                    resrictionVisual();
+                    return;
+                }
                 lastPosition = currentPosition;
                 currentPosition = hit.transform.gameObject;
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
-                onMoveEvent -= moveRestrcition;
                 isMoving = false;
+                resrictionVisual();
+                traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
                 return;
             }
 
@@ -93,27 +102,40 @@ public abstract class Unit : MonoBehaviour
             {
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
-                onMoveEvent -= moveRestrcition;
                 isMoving = false;
+                resrictionVisual();
                 return;
             }
         }
     }
 
-    protected virtual void moveRestrcition()
+    protected virtual void resrictionVisual()
     {
-
+        if (isMoving)
+        {
+            foreach(GameObject x in viableRoutes)
+            {
+                x.GetComponent<Renderer>().material.color = Color.white;
+            }
+        }
+        else
+        {
+            foreach (GameObject x in viableRoutes)
+            {
+                x.GetComponent<Renderer>().material.color = Color.black;
+            }
+        }
+        return;
     }
 
-    protected virtual List<GameObject> restriction()
+    protected virtual bool illegalMove(RaycastHit ray)
     {
-        GameObject[,,] matrix = BattleGridsGen.battleGridsGen.gridMatrix;
-        foreach(GameObject x in matrix)
+        GameObject theGrid = ray.transform.gameObject;
+        if(viableRoutes.Contains(theGrid))
         {
-
+            return false;
         }
-
-        return null;
+        return true;
     }
 
     protected virtual List<GameObject> traceViableGrids(GameObject[,,] matrix)
@@ -125,14 +147,13 @@ public abstract class Unit : MonoBehaviour
         {
             for(int j = 0; j < BattleGridsGen.battleGridsGen.row; j++)
             {
-                int[] index = BattleGridsGen.returnMatrixIndex(matrix[i, j, 0]);
-                if(Math.Abs((index[0] - currentIndex[0])) + Math.Abs((index[1] - currentIndex[1])) <= moveRange)
+                if((Math.Abs((i - currentIndex[0])) + Math.Abs((j - currentIndex[1]))) <= moveRange)
                 {
                     viable.Add(matrix[i, j, 0]);
                 }
-
             }
         }
+        viableRoutes = viable;
         return viable;
     }
 
@@ -183,6 +204,8 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Start()
     {
         onUpdateEvent += snapToFloor;
+        onMoveEvent += resrictionVisual;
+        traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
     }
 
     // Update is called once per frame

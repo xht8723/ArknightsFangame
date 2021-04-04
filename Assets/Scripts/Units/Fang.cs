@@ -99,10 +99,12 @@ public class Fang : Unit
     protected override void Start()
     {
         onUpdateEvent += snapToFloor;
+        onMoveEvent += resrictionVisual;
         Status = new status(false, 1325, 260, 0 , 325);
         Status.facing = facing.right;
         atkRange = 1;
-        moveRange = 6;
+        moveRange = 2;
+        traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
     }
 
 
@@ -111,7 +113,7 @@ public class Fang : Unit
         Status = new status(false, 1325, 260, 0, 325);
         Status.facing = facing.right;
         atkRange = 1;
-        moveRange = 6;
+        moveRange = 2;
         currentPosition = startPosition;
     }
 }
