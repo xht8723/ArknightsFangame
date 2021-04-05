@@ -322,6 +322,7 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/VSSettingsProvider.ref.dll"
 "Assets/Scripts/BattleGridsGen.cs"
 "Assets/Scripts/LevelController.cs"
+"Assets/Scripts/LevelDesign.cs"
 "Assets/Scripts/Units/EnemyRanger.cs"
 "Assets/Scripts/Units/Fang.cs"
 "Assets/Scripts/Units/status.cs"

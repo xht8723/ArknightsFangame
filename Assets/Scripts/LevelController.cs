@@ -2,23 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Reflection;
+
+public enum RoundStatus{ 
+    specialPhase,
+    move,
+    attack
+}
 
 public class LevelController : MonoBehaviour
 {
     public static LevelController levelController;
 
-    private Ray ray;
-    private RaycastHit hit;
+    public int level;
+    public int roundCounter;
+    public RoundStatus roundStatus;
 
-    public Transform castRay(int layerMask = 1 << 0)
+    public GameObject Fang;
+    public GameObject EnemyRanger;
+
+
+    public void setupBoard(levels level)
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+
+        LevelInfo levelInfo = LevelDesign.level1;
+        //Type levelDesign = Type.GetType("LevelDesign");
+        //Debug.Log(
+        //    levelDesign.GetProperty(level.ToString("G")).GetValue(null));
+
+        //LevelInfo levelInfo = (LevelInfo)levelDesign.GetProperty(level.ToString("G")).GetValue(null);
+        //MethodInfo invokeLevel = levelDesign.GetMethod(level.ToString("G"));
+        //LevelInfo levelInfo = (LevelInfo)invokeLevel.Invoke(null, null);
+
+        foreach(Unit x in levelInfo.allies)
         {
-            return hit.transform;
+            Fang.GetComponent<Unit>().deploy(x.currentPosition);
         }
-        return null;
+
+        foreach(Unit x in levelInfo.enemies)
+        {
+            EnemyRanger.GetComponent<Unit>().deploy(x.currentPosition);
+        }
+
+        this.level = (int)level;
+        roundCounter = 1;
+        roundStatus = RoundStatus.move;
     }
+
 
 
     private void Awake()
@@ -26,8 +56,13 @@ public class LevelController : MonoBehaviour
         levelController = this;
     }
 
+    private void Start()
+    {
+        setupBoard(levels.level1);
+    }
+
     void Update()
     {
-        //castRay();
+
     }
 }

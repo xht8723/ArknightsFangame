@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\BattleGridsGen.cs" />
     <Compile Include="Assets\Scripts\Units\Fang.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
+    <Compile Include="Assets\Scripts\LevelDesign.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

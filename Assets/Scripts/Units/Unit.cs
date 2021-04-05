@@ -18,7 +18,6 @@ public abstract class Unit : MonoBehaviour
     public List<GameObject> viableRoutes;
     bool isMoving = false;
 
-
     public void UpdateEvent()
     {
         if (onUpdateEvent != null)
@@ -52,6 +51,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     public abstract GameObject deploy(GameObject position);
+    public abstract GameObject deploy();
 
     protected abstract void OnMouseOver();
 

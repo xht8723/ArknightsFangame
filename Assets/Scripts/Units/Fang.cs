@@ -12,6 +12,12 @@ public class Fang : Unit
         datas.currentPosition = position;
         return Fang;
     }
+    public override GameObject deploy()
+    {
+        GameObject Fang = Instantiate(gameObject);
+        Fang datas = Fang.GetComponent<Fang>();
+        return Fang;
+    }
 
     protected override void OnMouseOver()
     {
@@ -100,7 +106,7 @@ public class Fang : Unit
     {
         onUpdateEvent += snapToFloor;
         onMoveEvent += resrictionVisual;
-        Status = new status(false, 1325, 260, 0 , 325);
+        Status = new status(false, 1325, 260, 0, 325);
         Status.facing = facing.right;
         atkRange = 1;
         moveRange = 2;

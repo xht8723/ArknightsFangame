@@ -31,7 +31,7 @@ public class BattleGridsGen : MonoBehaviour
     void Start()
     {
         gridGen();
-        placeFang();
+        //placeFang();
     }
 
     public static int[] returnMatrixIndex(GameObject grid)
