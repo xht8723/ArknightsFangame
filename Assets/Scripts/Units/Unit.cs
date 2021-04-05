@@ -34,6 +34,14 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    public void MoveEvent()
+    {
+        if (onMoveEvent != null)
+        {
+            onMoveEvent();
+        }
+    }
+
     public void ReceiveDmgEvent(GameObject opponent)
     {
         if(onReceiveDmgEvent != null)
@@ -42,21 +50,16 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    public void MoveEvent()
-    {
-        if(onMoveEvent != null)
-        {
-            onMoveEvent();
-        }
-    }
-
+    //deploy method spawns the character onto map
     public abstract GameObject deploy(GameObject position);
     public abstract GameObject deploy();
 
+    //planned for hightlight effect when mouse hovering.
     protected abstract void OnMouseOver();
 
     protected abstract void OnMouseExit();
 
+    //click and drag to move character.
     protected virtual void OnMouseDown()
     {
         if (!isMoving)
@@ -68,6 +71,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    //move method to caculate legal movements.
     private Ray ray;
     private RaycastHit hit;
     protected virtual void move()
@@ -109,6 +113,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    //change floor color to indicate legal movement.
     protected virtual void resrictionVisual()
     {
         if (isMoving)
@@ -128,6 +133,7 @@ public abstract class Unit : MonoBehaviour
         return;
     }
 
+    //check if current ray hit floor is leagal to move.
     protected virtual bool illegalMove(RaycastHit ray)
     {
         GameObject theGrid = ray.transform.gameObject;
@@ -138,6 +144,7 @@ public abstract class Unit : MonoBehaviour
         return true;
     }
 
+    //caculate viable grids for movement.
     protected virtual List<GameObject> traceViableGrids(GameObject[,,] matrix)
     {
         List<GameObject> viable = new List<GameObject>();
@@ -186,6 +193,7 @@ public abstract class Unit : MonoBehaviour
         if (isDead()) { Destroy(this.gameObject); }
     }
 
+    //make character snap to grid. called every updates.
     protected virtual void snapToFloor()
     {
         transform.position = currentPosition.transform.position;

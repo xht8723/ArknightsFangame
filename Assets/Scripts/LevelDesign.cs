@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+//enums for storing level names.
 public enum levels{
     level1 = 1,
 }
 
+//class used to provide datas to generate a level.
 public class LevelInfo
 {
     public int level;
@@ -21,7 +23,7 @@ public class LevelInfo
     }
 }
 
-
+//data designs for levels.
 [System.Serializable]
 public static class LevelDesign
 {

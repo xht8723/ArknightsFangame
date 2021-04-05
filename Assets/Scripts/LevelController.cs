@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 
+//enum for different phase of a round.
 public enum RoundStatus{ 
     specialPhase,
     move,
@@ -12,12 +13,13 @@ public enum RoundStatus{
 
 public class LevelController : MonoBehaviour
 {
-    public static LevelController levelController;
+    public static LevelController levelController;//make this class an unique object in unity.
 
     public int level;
     public int roundCounter;
     public RoundStatus roundStatus;
 
+    //prefabs for characters.
     public GameObject Fang;
     public GameObject EnemyRanger;
 

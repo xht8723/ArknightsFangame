@@ -6,22 +6,18 @@ using System;
 public class BattleGridsGen : MonoBehaviour
 {
 
-    public static BattleGridsGen battleGridsGen;
+    public static BattleGridsGen battleGridsGen;//make this class an unique object in unity
     public int col;
     public int row;
     public int gridSizeCoe;
-    public GameObject allyFloor;
+    public GameObject allyFloor;//prefab for floor
     public GameObject enemyFloor;
-    public int distance;
+    public int distance;//no use for now
 
 
     public List<GameObject> grids = new List<GameObject>();
-    //public List<GameObject> enemyGrids = new List<GameObject>();
-    //public List<GameObject> allyGrids = new List<GameObject>();
 
-    public GameObject[,,] gridMatrix;
-
-    public GameObject Fang;
+    public GameObject[,,] gridMatrix;//grid matrix
 
     private void Awake()
     {
@@ -31,9 +27,9 @@ public class BattleGridsGen : MonoBehaviour
     void Start()
     {
         gridGen();
-        //placeFang();
     }
 
+    //return the grid object's index number in matrix.
     public static int[] returnMatrixIndex(GameObject grid)
     {
         int row = BattleGridsGen.battleGridsGen.row;
@@ -44,15 +40,9 @@ public class BattleGridsGen : MonoBehaviour
         return returns;
     }
 
-    private void placeFang()
-    {
-        Fang.GetComponent<Fang>().deploy(gridMatrix[2,3,0]);
-    }
-
+    //Generates floor.
     private List<GameObject> gridGen() {
         Transform gridHolder = new GameObject("Grids").transform;
-        //Transform allyGridHolder = new GameObject("AllyGrids").transform;
-        //Transform enemyGridHolder = new GameObject("EnemyGrids").transform;
         int counter = 0;
 
         for (int i = 0; i < col; i = i + 1) { 
@@ -60,37 +50,16 @@ public class BattleGridsGen : MonoBehaviour
             {
                 GameObject newGrid = Instantiate(allyFloor, new Vector3(i*gridSizeCoe, 0f, j*gridSizeCoe), Quaternion.identity, gridHolder);
                 newGrid.transform.name = "AllyGrid" + counter.ToString();
-                //newGrid.transform.localScale = new Vector3(1.0f / (float)gridSizeCoe, 1.0f / (float)gridSizeCoe, 1.0f / (float)gridSizeCoe);
-                //allyGrids.Add(newGrid);
                 grids.Add(newGrid);
                 counter++;
             }
         }
-        /*
-        counter = 0;
-
-        for (int i = 0; i < col; i = i + 1)
-        {
-            for (int j = 0; j < row; j = j + 1)
-            {
-                GameObject newGrid = Instantiate(enemyFloor, new Vector3(i * gridSizeCoe, 0f, j * gridSizeCoe + distance*gridSizeCoe*3), Quaternion.identity, enemyGridHolder);
-                //newGrid.transform.localScale = new Vector3(1.0f / (float)gridSizeCoe, 1.0f / (float)gridSizeCoe, 1.0f / (float)gridSizeCoe);
-                newGrid.transform.name = "EnemyGrid" + counter.ToString();
-                enemyGrids.Add(newGrid);
-                grids.Add(newGrid);
-                counter++;
-            }
-        }
-        */
-
-        //allyGridHolder.SetParent(gridHolder);
-        //enemyGridHolder.SetParent(gridHolder);
-
         gridMatrixGen();
 
         return grids;
     }
 
+    //Generate grid matrix.
     private GameObject[,,] gridMatrixGen()
     {
         gridMatrix = new GameObject[col, row, 4];
@@ -105,19 +74,6 @@ public class BattleGridsGen : MonoBehaviour
                 counter++;
             }
         }
-        /*
-        counter = 0;
-
-        for (int i = 0; i < col; i++)
-        {
-            for (int j = 0; j < row; j++)
-            {
-                gridMatrix[i,j,1] = enemyGrids[counter];
-                counter++;
-            }
-        }
-        */
-
         return gridMatrix;
     }
 

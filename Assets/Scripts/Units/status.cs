@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//enum for which direction a character is facing. take more dmg from attacks coming from back.
 public enum facing
 {
     left,
@@ -18,7 +19,7 @@ public class status
     public int def;
     public int mr;
     public int atk;
-    public List<Effect> effects;
+    public List<Effect> effects;//for stroring buff/debuff.
 
     public status(bool isMagic, int hp, int def, int mr, int atk)
     {
@@ -30,6 +31,7 @@ public class status
         this.effects = new List<Effect>(); 
     }
 
+    //check if the target character
     public bool isBack(GameObject other)
     {
         facing facingToward = other.GetComponent<Unit>().Status.facing;
@@ -41,6 +43,7 @@ public class status
     }
 }
 
+//buff/debuff types
 public enum EffectType
 {
     stun,
@@ -50,7 +53,7 @@ public enum EffectType
     mrboost
 }
 
-
+//class for buff/debuff
 public abstract class Effect
 {
     public abstract EffectType type{get;}
