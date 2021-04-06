@@ -6,6 +6,8 @@ using System;
 //enums for storing level names.
 public enum levels{
     level1 = 1,
+    level2 = 2,
+    level3 = 3
 }
 
 //class used to provide datas to generate a level.
@@ -27,18 +29,21 @@ public class LevelInfo
 [System.Serializable]
 public static class LevelDesign
 {
-    static GameObject[,,] grid = BattleGridsGen.battleGridsGen.gridMatrix; 
+    static Fang fang = LevelController.levelController.Fang.GetComponent<Fang>();
+    static EnemyRanger enemy = LevelController.levelController.EnemyRanger.GetComponent<EnemyRanger>();
+    static GameObject[,,] grid = BattleGridsGen.battleGridsGen.gridMatrix;
+    static List<Unit> allies = new List<Unit>();
+    static List<Unit> enemies = new List<Unit>();
+
     public static LevelInfo level1
     {
         get
         {
-            List<Unit> allies = new List<Unit>();
-            Fang fang = LevelController.levelController.Fang.GetComponent<Fang>();
+            DefaultUnits.setDefaultFang(fang);
             fang.currentPosition = grid[2, 3, 0];
             allies.Add(fang);
-            List<Unit> enemies = new List<Unit>();
-            Unit enemy = LevelController.levelController.EnemyRanger.GetComponent<Unit>();
-            enemy.currentPosition = grid[5, 6, 0];
+            DefaultUnits.setEnemyRanger(enemy);
+            enemy.currentPosition = grid[3, 3, 0];
             enemies.Add(enemy);
             return new LevelInfo(levels.level1, enemies, allies);
         }

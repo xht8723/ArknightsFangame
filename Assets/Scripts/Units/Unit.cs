@@ -12,6 +12,9 @@ public abstract class Unit : MonoBehaviour
     protected event Action onMoveEvent;
     public int atkRange;
     public int moveRange;
+    public bool hasMoved = false;
+    public bool hasAttacked = false;
+    public bool hasSpecial = false;
     public GameObject currentPosition;
     public GameObject lastPosition;
 
@@ -51,7 +54,6 @@ public abstract class Unit : MonoBehaviour
     }
 
     //deploy method spawns the character onto map
-    public abstract GameObject deploy(GameObject position);
     public abstract GameObject deploy();
 
     //planned for hightlight effect when mouse hovering.
@@ -62,13 +64,21 @@ public abstract class Unit : MonoBehaviour
     //click and drag to move character.
     protected virtual void OnMouseDown()
     {
-        if (!isMoving)
+        if (!isMoving && LevelController.levelController.roundStatus.Equals(RoundStatus.move) && !hasMoved)
         {
             onUpdateEvent -= snapToFloor;
             onUpdateEvent += move;
             isMoving = true;
+            hasMoved = true;
             MoveEvent();
         }
+    }
+
+    public virtual void resetFlags()
+    {
+        hasMoved = false;
+        hasAttacked = false;
+        hasSpecial = false;
     }
 
     //move method to caculate legal movements.
@@ -164,9 +174,42 @@ public abstract class Unit : MonoBehaviour
         return viable;
     }
 
-    public abstract void attack(GameObject target);
+    public virtual void attack(GameObject target)
+    {
+        if (hasAttacked) { return; }
+        attackEvent(target);
+        target.GetComponent<Unit>().receiveDmg(gameObject);
+        hasAttacked = true;
+    }
 
-    public virtual void receiveDmg(GameObject opponent)
+
+    public virtual status simulateReceiveDmg(GameObject opponent)
+    {
+        status opponentStatus = new status(opponent.GetComponent<Unit>().Status);
+        status selfStatus = new status(this.Status);
+        int dmg = opponentStatus.atk;
+        if (selfStatus.isBack(opponent)) { dmg = dmg * 2; }
+
+        if (opponentStatus.isMagic)
+        {
+            selfStatus.hp = selfStatus.hp - (dmg * selfStatus.mr);
+        }
+        else
+        {
+            if (selfStatus.def >= dmg)
+            {
+                selfStatus.hp -= 1;
+            }
+            else
+            {
+                selfStatus.hp = selfStatus.hp - (dmg - selfStatus.def);
+            }
+        }
+        return opponentStatus;
+    }
+
+
+    public virtual status receiveDmg(GameObject opponent)
     {
         ReceiveDmgEvent(opponent);
         status opponentStatus = opponent.GetComponent<Unit>().Status;
@@ -190,7 +233,13 @@ public abstract class Unit : MonoBehaviour
             }
         }
 
-        if (isDead()) { Destroy(this.gameObject); }
+
+        if (isDead()) 
+        {
+            LevelController.levelController.aliveUnits.Remove(this);
+            Destroy(this.gameObject); 
+        }
+        return this.Status;
     }
 
     //make character snap to grid. called every updates.

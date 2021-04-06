@@ -63,6 +63,10 @@
     <Compile Include="Assets\Scripts\Units\Fang.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
     <Compile Include="Assets\Scripts\LevelDesign.cs" />
+    <Compile Include="Assets\Scripts\UI\StatusBar.cs" />
+    <Compile Include="Assets\Scripts\UI\CameraBillboard.cs" />
+    <Compile Include="Assets\Scripts\UI\NextPhaseButton.cs" />
+    <Compile Include="Assets\Scripts\Units\DefaultUnits.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -718,6 +722,10 @@
     <ProjectReference Include="Unity.VisualScripting.Core.csproj">
       <Project>{A30778CF-03F3-B864-48CD-34DBA282D580}</Project>
       <Name>Unity.VisualScripting.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Sprite.Editor.csproj">
+      <Project>{B6F80478-0671-AA09-CA95-A6DA336B5452}</Project>
+      <Name>Unity.2D.Sprite.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

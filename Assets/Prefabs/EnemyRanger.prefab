@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1690985726180991989}
   m_Layer: 0
   m_Name: EnemyRanger
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,6 +109,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9a7e1c1e650d7499c4d67079853f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Status:
+    isMagic: 0
+    facing: 0
+    hp: 0
+    maxHp: 0
+    def: 0
+    mr: 0
+    atk: 0
   atkRange: 0
   moveRange: 0
   currentPosition: {fileID: 0}

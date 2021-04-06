@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Rider.Editor", "Unity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VSCode.Editor", "Unity.VSCode.Editor.csproj", "{635534BD-58CC-B131-DCA8-03DDAB28E49C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.2D.Sprite.Editor", "Unity.2D.Sprite.Editor.csproj", "{B6F80478-0671-AA09-CA95-A6DA336B5452}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{635534BD-58CC-B131-DCA8-03DDAB28E49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{635534BD-58CC-B131-DCA8-03DDAB28E49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{635534BD-58CC-B131-DCA8-03DDAB28E49C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F80478-0671-AA09-CA95-A6DA336B5452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F80478-0671-AA09-CA95-A6DA336B5452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F80478-0671-AA09-CA95-A6DA336B5452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F80478-0671-AA09-CA95-A6DA336B5452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

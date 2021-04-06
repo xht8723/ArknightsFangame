@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - floor
+  - ally
+  - enemy
   layers:
   - Default
   - TransparentFX
