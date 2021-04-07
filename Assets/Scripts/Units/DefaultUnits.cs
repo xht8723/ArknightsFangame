@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//some default unit datas for testing.
 public static class DefaultUnits
 {
     public static void setDefaultFang(Fang Fang)

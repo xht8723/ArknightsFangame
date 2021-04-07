@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+//a class used to generated floor and make it into a matrix system.
 public class BattleGridsGen : MonoBehaviour
 {
-
     public static BattleGridsGen battleGridsGen;//make this class an unique object in unity
     public int col;
     public int row;

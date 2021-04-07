@@ -11,6 +11,7 @@ public enum RoundStatus{
     attack
 }
 
+//contols everything within a level, including phase change, deploy characters, storing round information .etc
 public class LevelController : MonoBehaviour
 {
     public static LevelController levelController;//make this class an unique object in unity.
@@ -22,8 +23,8 @@ public class LevelController : MonoBehaviour
     public int level;
     public int roundCounter;
     public RoundStatus roundStatus;
-    public List<Unit> aliveUnits = new List<Unit>();
-    public List<attack> viableAttacks = new List<attack>();
+    public List<Unit> aliveUnits = new List<Unit>();//list for alive units on boards.
+    public List<attack> viableAttacks = new List<attack>();//list for all viable attacks after move phase.
 
     public event Action onMoveEndEvent;
     public event Action onMoveStartEvent;
@@ -83,7 +84,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-
+    //load level data from LevelDesign class and place all units.
     public void setupBoard(levels level)
     {
         Type levelDesign = Type.GetType("LevelDesign");
@@ -106,6 +107,7 @@ public class LevelController : MonoBehaviour
         roundStatus = RoundStatus.move;
     }
 
+    //switch phases
     public void goNextPhase()
     {
         switch (roundStatus)
@@ -136,6 +138,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    //healper method to check if a unit is on a grid.
     public bool detectIfUnitOnGrid(Unit unit, GameObject grid)
     {
         if(unit.currentPosition == grid)
@@ -145,6 +148,7 @@ public class LevelController : MonoBehaviour
         return false;
     }
 
+    //store a unit's attackable grids within a unit's attack range.
     public List<GameObject> inRangeGrids(Unit unit)
     {
         int[] position = BattleGridsGen.returnMatrixIndex(unit.currentPosition);
@@ -216,7 +220,7 @@ public class LevelController : MonoBehaviour
         return inRangeGrids;
     }
 
-
+    //stores viable attacks if there are attackable units in their attack range.
     public attack detectViableAttacks(List<GameObject> inRangeGrids, Unit unit)
     {
         foreach (GameObject x in inRangeGrids)
@@ -252,6 +256,7 @@ public class LevelController : MonoBehaviour
         return new attack(true);
     }
 
+    //updates viable attackes.
     public void updateAttacks()
     {
         viableAttacks.Clear();
@@ -261,6 +266,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    //attacks.
     public void excecuteAttacks()
     {
         if (viableAttacks.Contains(new attack(true)) || viableAttacks.Count == 0)
@@ -277,6 +283,7 @@ public class LevelController : MonoBehaviour
         viableAttacks.Clear();
     }
 
+    //simulate attacks for preview the combat result before acually attacks. used for preview UI.
     public void simulateAttackResult(Unit self, Unit target, out status selfResult, out status targetResult)
     {
         status selfData = new status(self.Status);
@@ -322,6 +329,7 @@ public class LevelController : MonoBehaviour
     }
 }
 
+//helper struct that stores an attack information.
 public struct attack
 {
     public Unit self;

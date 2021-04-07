@@ -5,6 +5,7 @@ using System;
 
 public class Fang : Unit
 {
+    //depolys character onto board.
     public override GameObject deploy()
     {
         GameObject Fang = Instantiate(gameObject);

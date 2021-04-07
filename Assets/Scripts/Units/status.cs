@@ -12,6 +12,7 @@ public enum facing
     down
 }
 
+//a data class used to store status infomation of a unit.
 [System.Serializable]
 public class status
 {

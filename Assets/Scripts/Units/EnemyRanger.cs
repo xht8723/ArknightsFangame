@@ -14,6 +14,7 @@ public class EnemyRanger : Unit
         return;
     }
 
+    //enemy movement rule. pending to complete.
     protected override void move()
     {
         return;

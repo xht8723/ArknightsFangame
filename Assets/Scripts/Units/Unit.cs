@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+//abstract class for all characters.
 public abstract class Unit : MonoBehaviour
 {
     public status Status;
@@ -18,7 +19,7 @@ public abstract class Unit : MonoBehaviour
     public GameObject currentPosition;
     public GameObject lastPosition;
 
-    public List<GameObject> viableRoutes;
+    public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
     bool isMoving = false;
 
     public void UpdateEvent()
@@ -74,6 +75,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    //reset all flags when a round is over.
     public virtual void resetFlags()
     {
         hasMoved = false;
@@ -123,7 +125,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    //change floor color to indicate legal movement.
+    //change floor color to indicate legal movement. only used for controlleable units(allies)
     protected virtual void resrictionVisual()
     {
         if (isMoving)
@@ -143,7 +145,7 @@ public abstract class Unit : MonoBehaviour
         return;
     }
 
-    //check if current ray hit floor is leagal to move.
+    //check if current ray hit is leagal to move.
     protected virtual bool illegalMove(RaycastHit ray)
     {
         GameObject theGrid = ray.transform.gameObject;
@@ -154,7 +156,7 @@ public abstract class Unit : MonoBehaviour
         return true;
     }
 
-    //caculate viable grids for movement.
+    //caculate viable grids for movement. updates after every movement.
     protected virtual List<GameObject> traceViableGrids(GameObject[,,] matrix)
     {
         List<GameObject> viable = new List<GameObject>();
@@ -174,6 +176,7 @@ public abstract class Unit : MonoBehaviour
         return viable;
     }
 
+    //attacks.
     public virtual void attack(GameObject target)
     {
         if (hasAttacked) { return; }
@@ -183,6 +186,7 @@ public abstract class Unit : MonoBehaviour
     }
 
 
+    //replaced with simulateAttackResult in LevelController.
     public virtual status simulateReceiveDmg(GameObject opponent)
     {
         status opponentStatus = new status(opponent.GetComponent<Unit>().Status);
@@ -208,7 +212,7 @@ public abstract class Unit : MonoBehaviour
         return opponentStatus;
     }
 
-
+    //receives dmg.
     public virtual status receiveDmg(GameObject opponent)
     {
         ReceiveDmgEvent(opponent);
