@@ -59,25 +59,3 @@ public class status
         return false;
     }
 }
-
-[System.Serializable]
-//buff/debuff types
-public enum EffectType
-{
-    stun,
-    fragile,
-    atkboost,
-    defboost,
-    mrboost
-}
-
-[System.Serializable]
-//class for buff/debuff
-public abstract class Effect
-{
-    public abstract EffectType type{get;}
-    public abstract int period { get; set; }
-    public abstract void applyEffect(Unit unit);
-    public abstract void removeEffect(Unit unit);
-
-}

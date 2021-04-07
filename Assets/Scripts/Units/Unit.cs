@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 //abstract class for all characters.
 public abstract class Unit : MonoBehaviour
@@ -9,10 +10,12 @@ public abstract class Unit : MonoBehaviour
     public status Status;
     public event Action<Unit, Unit> onAttackEvent;
     public event Action<Unit, Unit> onReceiveDmgEvent;
-    protected event Action onUpdateEvent;
-    protected event Action onMoveEvent;
+    public event Action onUpdateEvent;
+    public event Action onMoveEvent;
     public int atkRange;
     public int moveRange;
+    public List<Skills> skills;
+    public int cd;
     public bool hasMoved = false;
     public bool hasAttacked = false;
     public bool hasSpecial = false;
@@ -20,7 +23,7 @@ public abstract class Unit : MonoBehaviour
     public GameObject lastPosition;
 
     public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
-    bool isMoving = false;
+    public bool isMoving = false;
 
     public void UpdateEvent()
     {
@@ -62,7 +65,7 @@ public abstract class Unit : MonoBehaviour
 
     protected abstract void OnMouseExit();
 
-    //click and drag to move character.
+    //click and drag to move character or when in special phase to active skills;
     protected virtual void OnMouseDown()
     {
         if (!isMoving && LevelController.levelController.roundStatus.Equals(RoundStatus.move) && !hasMoved)
@@ -75,12 +78,28 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    //to active skill in special phase;
+    protected virtual void OnMouseUp()
+    {
+        if (LevelController.levelController.roundStatus.Equals(RoundStatus.specialPhase) && cd <= 0)
+        {
+            foreach (Skills s in skills)
+            {
+                if (!s.isPassive)
+                {
+                    s.effect();
+                    cd = s.cd;
+                }
+            }
+        }
+    }
+
     //reset all flags when a round is over.
     public virtual void resetFlags()
     {
         hasMoved = false;
         hasAttacked = false;
-        hasSpecial = false;
+        cd--;
     }
 
     //move method to caculate legal movements.
@@ -88,7 +107,6 @@ public abstract class Unit : MonoBehaviour
     private RaycastHit hit;
     protected virtual void move()
     {
-        
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("floor")))
         {
@@ -106,6 +124,14 @@ public abstract class Unit : MonoBehaviour
                 }
                 lastPosition = currentPosition;
                 currentPosition = hit.transform.gameObject;
+                if(lastPosition == currentPosition)
+                {
+                    hasMoved = false;
+                }
+                else
+                {
+                    hasMoved = true;
+                }
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
                 isMoving = false;
@@ -247,7 +273,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     //make character snap to grid. called every updates.
-    protected virtual void snapToFloor()
+    public virtual void snapToFloor()
     {
         transform.position = currentPosition.transform.position;
     }
@@ -261,9 +287,29 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
+    //helper method to make sure after every move phase that a unit's hasmoved flag is true;
+    public void changeMoveFlag()
+    {
+        hasMoved = true;
+    }
+
+    public virtual void countEffectPeriod()
+    {
+        foreach(Effect e in Status.effects.ToList())
+        {
+            e.period--;
+            if(e.period <= 0)
+            {
+                e.remove();
+            }
+        }
+    }
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        LevelController.levelController.onMoveEndEvent += changeMoveFlag;
+        LevelController.levelController.onSpecialPhaseEndEvent += countEffectPeriod;
         onUpdateEvent += snapToFloor;
         onMoveEvent += resrictionVisual;
         traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);

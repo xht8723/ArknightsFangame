@@ -9,6 +9,7 @@ public class Fang : Unit
     public override GameObject deploy()
     {
         GameObject Fang = Instantiate(gameObject);
+        DefaultUnits.setDefaultFang(Fang);
         return Fang;
     }
 
@@ -22,9 +23,29 @@ public class Fang : Unit
         return;
     }
 
+    protected override void OnMouseDown()
+    {
+        if (!isMoving && (LevelController.levelController.roundStatus.Equals(RoundStatus.move) || LevelController.levelController.roundStatus.Equals(RoundStatus.specialPhase)) && !hasMoved)
+        {
+            onUpdateEvent -= snapToFloor;
+            onUpdateEvent += move;
+            isMoving = true;
+            MoveEvent();
+        }
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
+        foreach(Skills s in skills)
+        {
+            if (s.isPassive)
+            {
+                s.effect();
+            }
+        }
+        LevelController.levelController.onMoveEndEvent += changeMoveFlag;
+        LevelController.levelController.onSpecialPhaseEndEvent += countEffectPeriod;
         onUpdateEvent += snapToFloor;
         onMoveEvent += resrictionVisual;
         traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);

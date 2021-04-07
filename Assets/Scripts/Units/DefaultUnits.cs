@@ -5,12 +5,16 @@ using UnityEngine;
 //some default unit datas for testing.
 public static class DefaultUnits
 {
-    public static void setDefaultFang(Fang Fang)
+    public static void setDefaultFang(GameObject Fang)
     {
-        Fang.Status = new status(false, 1325, 260, 100, 325);
-        Fang.Status.facing = facing.down;
-        Fang.atkRange = 1;
-        Fang.moveRange = 2;
+        Fang fang = Fang.GetComponent<Fang>();
+        fang.Status = new status(false, 1325, 260, 100, 325);
+        fang.Status.facing = facing.down;
+        fang.atkRange = 1;
+        fang.moveRange = 2;
+        fang.skills = new List<Skills>();
+        fang.skills.Add(new MoveAgain(fang));
+        fang.skills.Add(new AttackUpPassive(fang));
     }
 
     public static void setEnemyRanger(EnemyRanger ER)

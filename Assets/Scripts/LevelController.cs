@@ -179,7 +179,6 @@ public class LevelController : MonoBehaviour
                     {
                         inRangeGrids.Add(grids[position[0] + i, position[1], 0]);
                     }
-                    Debug.Log("in down");
                     break;
                 }
                 catch (Exception)
