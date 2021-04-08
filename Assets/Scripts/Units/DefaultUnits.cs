@@ -17,11 +17,14 @@ public static class DefaultUnits
         fang.skills.Add(new AttackUpPassive(fang));
     }
 
-    public static void setEnemyRanger(EnemyRanger ER)
+    public static void setEnemyRanger(GameObject ER)
     {
-        ER.Status = new status(false, 1400, 100, 0, 240);
-        ER.Status.facing = facing.up;
-        ER.atkRange = 10;
-        ER.moveRange = 2;
+        EnemyRanger er = ER.GetComponent<EnemyRanger>();
+        er.Status = new status(false, 1400, 100, 0, 240);
+        er.Status.facing = facing.up;
+        er.atkRange = 10;
+        er.moveRange = 2;
+        er.visionRange = 10;
+        er.skills = new List<Skills>();
     }
 }

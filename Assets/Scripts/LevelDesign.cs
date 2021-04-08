@@ -42,7 +42,7 @@ public static class LevelDesign
             DefaultUnits.setDefaultFang(fang.gameObject);
             fang.currentPosition = grid[2, 3, 0];
             allies.Add(fang);
-            DefaultUnits.setEnemyRanger(enemy);
+            DefaultUnits.setEnemyRanger(enemy.gameObject);
             enemy.currentPosition = grid[3, 3, 0];
             enemies.Add(enemy);
             return new LevelInfo(levels.level1, enemies, allies);

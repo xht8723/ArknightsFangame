@@ -272,6 +272,46 @@ public abstract class Unit : MonoBehaviour
         return this.Status;
     }
 
+    //calculate two units' distance of each other.
+    protected virtual int calculateDistance(Unit unit1, Unit unit2)
+    {
+        int[] unit1P = BattleGridsGen.returnMatrixIndex(unit1.currentPosition);
+        int[] unit2P = BattleGridsGen.returnMatrixIndex(unit2.currentPosition);
+        return Mathf.Abs(unit1P[0] - unit2P[0]) + Mathf.Abs(unit1P[1] - unit2P[1]);
+    }
+
+    //calculate two grids' distance.
+    protected virtual int calculateDistance(GameObject grid1, GameObject grid2)
+    {
+        int[] unit1P = BattleGridsGen.returnMatrixIndex(grid1);
+        int[] unit2P = BattleGridsGen.returnMatrixIndex(grid2);
+        return Mathf.Abs(unit1P[0] - unit2P[0]) + Mathf.Abs(unit1P[1] - unit2P[1]);
+    }
+
+    //move toward a unit.
+    protected virtual void moveToward(Unit unit)
+    {
+        int distance = BattleGridsGen.battleGridsGen.col * BattleGridsGen.battleGridsGen.row;
+        GameObject closestGrid = null;
+        foreach(GameObject x in viableRoutes)
+        {
+            int temp = calculateDistance(unit.currentPosition, x);
+            if (temp < distance && temp != 0)
+            {
+                closestGrid = x;
+                distance = temp;
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        this.lastPosition = currentPosition;
+        this.currentPosition = closestGrid;
+    }
+
+
     //make character snap to grid. called every updates.
     public virtual void snapToFloor()
     {

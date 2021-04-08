@@ -44,19 +44,6 @@ public class Fang : Unit
                 s.effect();
             }
         }
-        LevelController.levelController.onMoveEndEvent += changeMoveFlag;
-        LevelController.levelController.onSpecialPhaseEndEvent += countEffectPeriod;
-        onUpdateEvent += snapToFloor;
-        onMoveEvent += resrictionVisual;
-        traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
-    }
-
-
-    public Fang(status status)
-    {
-        Status = status;
-        Status.facing = facing.down;
-        atkRange = 1;
-        moveRange = 2;
+        base.Start();
     }
 }

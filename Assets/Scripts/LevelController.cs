@@ -115,7 +115,6 @@ public class LevelController : MonoBehaviour
             case RoundStatus.move:
                 MoveEndEvent();
                 roundStatus = RoundStatus.attack;
-                updateAttacks();
                 AttackStartEvent();
                 return;
 
@@ -163,7 +162,6 @@ public class LevelController : MonoBehaviour
                     for (int i = 1; i <= unit.atkRange; i++)
                     {
                         inRangeGrids.Add(grids[position[0] - i, position[1], 0]);
-                        grids[position[0] - i, position[1], 0].gameObject.GetComponent<Renderer>().material.color = Color.red;
                     }
                     break;
                 }
@@ -320,6 +318,7 @@ public class LevelController : MonoBehaviour
     private void Start()
     {
         setupBoard(levels.level1);
+        onAttackStartEvent += updateAttacks;
     }
 
     void Update()
