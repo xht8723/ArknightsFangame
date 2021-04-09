@@ -34,6 +34,16 @@ public class Fang : Unit
         }
     }
 
+    //Fang's attack deals more dmg when target's hp is lower than half.
+    public override void attack(GameObject target)
+    {
+        if(target.GetComponent<Unit>().Status.hp < target.GetComponent<Unit>().Status.maxHp / 2)
+        {
+            this.Status.effects.Add(new StatusChangeEffect(this, 1, 150));
+        }
+        base.attack(target);
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {

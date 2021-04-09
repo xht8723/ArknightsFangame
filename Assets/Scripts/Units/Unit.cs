@@ -10,6 +10,7 @@ public abstract class Unit : MonoBehaviour
     public status Status;
     public event Action<Unit, Unit> onAttackEvent;
     public event Action<Unit, Unit> onReceiveDmgEvent;
+    public event Action onKillEvent;
     public event Action onUpdateEvent;
     public event Action onMoveEvent;
     public int atkRange;
@@ -24,6 +25,14 @@ public abstract class Unit : MonoBehaviour
 
     public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
     public bool isMoving = false;
+
+    public void killEvent()
+    {
+        if(onKillEvent != null)
+        {
+            onKillEvent();
+        }
+    }
 
     public void UpdateEvent()
     {
@@ -309,6 +318,28 @@ public abstract class Unit : MonoBehaviour
 
         this.lastPosition = currentPosition;
         this.currentPosition = closestGrid;
+    }
+
+    protected virtual void moveAway(Unit unit)
+    {
+        int distance = BattleGridsGen.battleGridsGen.col * BattleGridsGen.battleGridsGen.row;
+        GameObject fartherestGrid = null;
+        foreach(GameObject x in viableRoutes)
+        {
+            int temp = calculateDistance(unit.currentPosition, x);
+            if(temp > distance && temp != 0)
+            {
+                fartherestGrid = x;
+                distance = temp;
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        this.lastPosition = currentPosition;
+        this.currentPosition = fartherestGrid;
     }
 
 

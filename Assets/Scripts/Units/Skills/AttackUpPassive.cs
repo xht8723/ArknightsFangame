@@ -8,7 +8,6 @@ public class AttackUpPassive : Skills
     public override void effect()
     {
         StatusChangeEffect e = new StatusChangeEffect(unit, 1, 100);
-        unit.Status.effects.Add(e);
         e.effect();
     }
 

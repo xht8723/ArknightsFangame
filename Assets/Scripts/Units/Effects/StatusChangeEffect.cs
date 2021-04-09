@@ -5,7 +5,6 @@ using System;
 
 public class StatusChangeEffect : Effect
 {
-    Unit unit;
     int atkChange;
     int defChange;
     int mrChange;
@@ -13,6 +12,7 @@ public class StatusChangeEffect : Effect
 
     public override void effect()
     {
+        unit.Status.effects.Add(this);
         unit.Status.atk += atkChange;
         unit.Status.def += defChange;
         unit.Status.mr += mrChange;

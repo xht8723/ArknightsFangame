@@ -20,6 +20,7 @@ public static class DefaultUnits
     public static void setEnemyRanger(GameObject ER)
     {
         EnemyRanger er = ER.GetComponent<EnemyRanger>();
+        er.isRanged = true;
         er.Status = new status(false, 1400, 100, 0, 240);
         er.Status.facing = facing.up;
         er.atkRange = 10;

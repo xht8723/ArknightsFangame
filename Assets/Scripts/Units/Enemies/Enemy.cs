@@ -5,6 +5,7 @@ using System;
 
 public abstract class Enemy : Unit
 {
+    public bool isRanged;
     public int visionRange;
     protected List<GameObject> vision;
 
@@ -77,8 +78,14 @@ public abstract class Enemy : Unit
                 continue;
             }
         }
-
-        moveToward(closestAlly);
+        if (isRanged)
+        {
+            moveAway(closestAlly);
+        }
+        else
+        {
+            moveToward(closestAlly);
+        }
     }
 
     protected override void Start()
