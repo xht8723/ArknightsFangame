@@ -248,8 +248,6 @@ public class LevelController : MonoBehaviour
                 }
             }
         }
-
-        Debug.Log("No valid attacks");
         return new attack(true);
     }
 

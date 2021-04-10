@@ -78,6 +78,7 @@ public abstract class Enemy : Unit
                 continue;
             }
         }
+
         if (isRanged)
         {
             moveAway(closestAlly);

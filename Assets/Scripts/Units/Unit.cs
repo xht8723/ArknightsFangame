@@ -322,14 +322,14 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void moveAway(Unit unit)
     {
-        int distance = BattleGridsGen.battleGridsGen.col * BattleGridsGen.battleGridsGen.row;
-        GameObject fartherestGrid = null;
+        int distance = 0;
+        List<GameObject> fartherestGrid = new List<GameObject>();
         foreach(GameObject x in viableRoutes)
         {
             int temp = calculateDistance(unit.currentPosition, x);
-            if(temp > distance && temp != 0)
+            if(temp >= distance && temp != 0)
             {
-                fartherestGrid = x;
+                fartherestGrid.Add(x);
                 distance = temp;
             }
             else
@@ -339,7 +339,8 @@ public abstract class Unit : MonoBehaviour
         }
 
         this.lastPosition = currentPosition;
-        this.currentPosition = fartherestGrid;
+        System.Random rnd = new System.Random();
+        this.currentPosition = fartherestGrid[rnd.Next(fartherestGrid.Count)];
     }
 
 
