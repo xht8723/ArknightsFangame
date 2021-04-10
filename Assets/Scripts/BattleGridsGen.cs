@@ -18,6 +18,7 @@ public class BattleGridsGen : MonoBehaviour
     public List<GameObject> grids = new List<GameObject>();
 
     public GameObject[,,] gridMatrix;//grid matrix
+    public Transform gridHolder;
 
     private void Awake()
     {
@@ -42,7 +43,7 @@ public class BattleGridsGen : MonoBehaviour
 
     //Generates floor.
     private List<GameObject> gridGen() {
-        Transform gridHolder = new GameObject("Grids").transform;
+        gridHolder = new GameObject("Grids").transform;
         int counter = 0;
 
         for (int i = 0; i < col; i = i + 1) { 

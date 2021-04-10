@@ -263,6 +263,11 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    public void updatesFOW()
+    {
+
+    }
+
     //attacks.
     public void excecuteAttacks()
     {
