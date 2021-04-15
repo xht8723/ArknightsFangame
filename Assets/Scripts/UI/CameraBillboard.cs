@@ -7,14 +7,6 @@ public class CameraBillboard : MonoBehaviour
     public bool BillboardX = true;
     public bool BillboardY = true;
     public bool BillboardZ = true;
-    protected Vector3 localStartPosition;
-
-    // Use this for initialization
-    void Start()
-    {
-        localStartPosition = transform.localPosition;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -27,7 +19,5 @@ public class CameraBillboard : MonoBehaviour
                 BillboardY ? transform.rotation.eulerAngles.y : 0f, 
                 BillboardZ ? transform.rotation.eulerAngles.z : 0f);
         }
-            
-        transform.localPosition = localStartPosition;
     }
 }

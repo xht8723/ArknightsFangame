@@ -806,8 +806,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa37cb65169de3440aa4ea6e58ba8173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Fang: {fileID: 7265474719857202416, guid: 278dd4b57a704214993d1338ad765f3a, type: 3}
-  EnemyRanger: {fileID: 2326837982055710770, guid: 98be859ea2128174ab6962a9ce4fdd44, type: 3}
+  Fang: {fileID: 1859555284072742733, guid: e1457c3cb377fb84fae5a13a705957a9, type: 3}
+  EnemyRanger: {fileID: 2853363016101127189, guid: 6170aa2f6f81e4f4ea0433a80da5c131, type: 3}
   level: 0
   roundCounter: 0
   roundStatus: 0

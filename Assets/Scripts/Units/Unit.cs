@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using System.Linq;
 
+
 //abstract class for all characters.
 public abstract class Unit : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public abstract class Unit : MonoBehaviour
 
     public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
     public bool isMoving = false;
+
+    Camera maincamera;
 
     public void killEvent()
     {
@@ -391,5 +394,10 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Update()
     {
         UpdateEvent();
+    }
+
+    private void Awake()
+    {
+        maincamera = Camera.main;
     }
 }
