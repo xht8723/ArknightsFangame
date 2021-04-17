@@ -41,6 +41,12 @@ public class BattleGridsGen : MonoBehaviour
         return returns;
     }
 
+    public static GameObject returnMatrixIndex(int gridIndex)
+    {
+        GameObject grid = GameObject.Find("AllyGrid" + gridIndex.ToString());
+        return grid;
+    }
+
     //Generates floor.
     private List<GameObject> gridGen() {
         gridHolder = new GameObject("Grids").transform;

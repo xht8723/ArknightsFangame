@@ -65,6 +65,7 @@ MonoBehaviour:
   lastPosition: {fileID: 0}
   viableRoutes: []
   isMoving: 0
+  sprite: {fileID: 3715707163432024206}
   isRanged: 0
   visionRange: 0
 --- !u!114 &5279042975609236172

@@ -8,6 +8,20 @@ public class CameraController : MonoBehaviour {
     float maxShift = 1000.0f; //Maximum speed when holdin gshift
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun= 1.0f;
+
+    private int col;
+    private int row;
+    private int gridSizeCoe;
+    private Vector3 startingPos;
+
+    private void Start()
+    {
+        col = BattleGridsGen.battleGridsGen.col;
+        row = BattleGridsGen.battleGridsGen.row;
+        gridSizeCoe = BattleGridsGen.battleGridsGen.gridSizeCoe;
+        startingPos = transform.position;
+    }
+
     void Update () {
 
         //Keyboard commands
@@ -60,20 +74,19 @@ public class CameraController : MonoBehaviour {
     private Vector3 GetBaseInput() { 
         Vector3 p_Velocity = new Vector3();
 
-        if ( Input.mousePosition.y >= Screen.height *0.97)
-            //&& transform.position.x <= (BattleGridsGen.battleGridsGen.gridHolder.position.x + BattleGridsGen.battleGridsGen.row * 4)) 
+        if ( Input.mousePosition.y >= Screen.height *0.97 && transform.position.x >= 25)
          {
             p_Velocity += new Vector3(0, 1, 0);
          }
-        if ( Input.mousePosition.y <= Screen.height *0.03)
+        if ( Input.mousePosition.y <= Screen.height *0.03 && transform.position.x <= row*gridSizeCoe - 5)
         {
             p_Velocity += new Vector3(0, -1, 0);
         }
-        if ( Input.mousePosition.x <= Screen.width *0.03)
+        if (Input.mousePosition.x <= Screen.width * 0.03 && transform.position.z - startingPos.z >= startingPos.z - col*gridSizeCoe/2)
          {
             p_Velocity += new Vector3(-1, 0, 0);
          }
-        if ( Input.mousePosition.x >= Screen.width *0.97)
+        if ( Input.mousePosition.x >= Screen.width *0.97 && transform.position.z - startingPos.z <= col * gridSizeCoe / 2 - startingPos.z)
         {
             p_Velocity += new Vector3(1, 0, 0);
         }

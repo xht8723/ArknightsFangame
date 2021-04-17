@@ -28,6 +28,7 @@ public abstract class Unit : MonoBehaviour
     public bool isMoving = false;
 
     Camera maincamera;
+    public GameObject sprite;
 
     public void killEvent()
     {
@@ -143,6 +144,7 @@ public abstract class Unit : MonoBehaviour
                 else
                 {
                     hasMoved = true;
+                    onUpdateEvent += chooseFacing;
                 }
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
@@ -151,6 +153,8 @@ public abstract class Unit : MonoBehaviour
                 traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
                 return;
             }
+
+
 
             if (Input.GetMouseButtonDown(1))
             {
@@ -161,6 +165,44 @@ public abstract class Unit : MonoBehaviour
                 return;
             }
         }
+    }
+
+    protected virtual void chooseFacing() {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("floor"))) {
+            Vector2 thisV = new Vector2(0, 1);
+            Vector2 hitV = new Vector2(hit.transform.position.x - transform.position.x, hit.transform.position.z - transform.position.z);
+            float angle = Vector2.Angle(thisV, hitV);
+            switch (angle) {
+                case 0f:
+                    sprite.GetComponent<SpriteRenderer>().flipX = false;
+                    Status.facing = facing.right;
+                    break;
+                case 180f:
+                    sprite.GetComponent<SpriteRenderer>().flipX = true;
+                    Status.facing = facing.left;
+                    break;
+                case 90f:
+                    if(hit.transform.position.x - transform.position.x >= 0)
+                    {
+                        Status.facing = facing.down;
+                    }
+                    else
+                    {
+                        Status.facing = facing.up;
+                    }
+                    break;
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                onUpdateEvent -= chooseFacing;
+            }
+        }
+    }
+
+    protected float AngleBettween(Vector3 a, Vector3 b) {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 
     //change floor color to indicate legal movement. only used for controlleable units(allies)
@@ -383,6 +425,7 @@ public abstract class Unit : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        maincamera = Camera.main;
         LevelController.levelController.onMoveEndEvent += changeMoveFlag;
         LevelController.levelController.onSpecialPhaseEndEvent += countEffectPeriod;
         onUpdateEvent += snapToFloor;
