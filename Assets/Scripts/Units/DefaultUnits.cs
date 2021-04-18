@@ -8,7 +8,7 @@ public static class DefaultUnits
     public static void setDefaultFang(GameObject Fang)
     {
         Fang fang = Fang.GetComponent<Fang>();
-        fang.Status = new status(false, 1325, 260, 100, 325);
+        fang.Status = new status(false, 1325, 260, 100, 325, 10);
         fang.Status.facing = facing.down;
         fang.atkRange = 1;
         fang.moveRange = 2;
@@ -21,7 +21,7 @@ public static class DefaultUnits
     {
         EnemyRanger er = ER.GetComponent<EnemyRanger>();
         er.isRanged = true;
-        er.Status = new status(false, 1400, 100, 0, 240);
+        er.Status = new status(false, 1400, 100, 0, 240, 5);
         er.Status.facing = facing.up;
         er.atkRange = 10;
         er.moveRange = 2;

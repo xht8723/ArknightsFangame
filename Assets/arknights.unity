@@ -533,7 +533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e428743ecf31a418d9669d4192e491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phaseStatus: {fileID: 0}
+  phaseStatus: {fileID: 1409828275}
 --- !u!1 &1166796331
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +627,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1409828275 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5286490289902107489, guid: e423e1f1fcbc283469c788216a2af37f, type: 3}
+  m_PrefabInstance: {fileID: 124832010}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1873800115
 GameObject:
   m_ObjectHideFlags: 0

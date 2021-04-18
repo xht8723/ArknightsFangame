@@ -23,6 +23,7 @@ public class status
     public int def;
     public int mr;
     public int atk;
+    public int speed;
     public List<Effect> effects;//for stroring buff/debuff.
 
     public status(status target)
@@ -33,11 +34,12 @@ public class status
         this.def = target.def;
         this.mr = target.mr;
         this.atk = target.atk;
+        this.speed = target.speed;
         this.effects = target.effects;
         this.facing = target.facing;
     }
 
-    public status(bool isMagic, int hp, int def, int mr, int atk)
+    public status(bool isMagic, int hp, int def, int mr, int atk, int speed)
     {
         this.isMagic = isMagic;
         this.hp = hp;
@@ -45,6 +47,7 @@ public class status
         this.def = def;
         this.mr = mr;
         this.atk = atk;
+        this.speed = speed;
         this.effects = new List<Effect>(); 
     }
 

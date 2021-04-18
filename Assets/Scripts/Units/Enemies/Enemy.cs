@@ -82,10 +82,24 @@ public abstract class Enemy : Unit
         if (isRanged)
         {
             moveAway(closestAlly);
+            MoveEvent();
+            isTurn = false;
         }
         else
         {
             moveToward(closestAlly);
+            MoveEvent();
+            isTurn = false;
+        }
+
+        LevelController.levelController.startMove();
+    }
+
+    protected void canMove()
+    {
+        if (this.isTurn)
+        {
+            move();
         }
     }
 
@@ -98,7 +112,7 @@ public abstract class Enemy : Unit
                 s.effect();
             }
         }
-        LevelController.levelController.onMoveEndEvent += move;
+        onUpdateEvent += canMove;
         base.Start();
     }
 }

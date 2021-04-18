@@ -25,6 +25,7 @@ public class LevelController : MonoBehaviour
     public RoundStatus roundStatus;
     public List<Unit> aliveUnits = new List<Unit>();//list for alive units on boards.
     public List<attack> viableAttacks = new List<attack>();//list for all viable attacks after move phase.
+    public SortedList<int, Unit> speedList = new SortedList<int, Unit>();
 
     public event Action onMoveEndEvent;
     public event Action onMoveStartEvent;
@@ -84,6 +85,27 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    public void caculateSpeed()
+    {
+        speedList.Clear();
+        foreach(Unit x in aliveUnits)
+        {
+            speedList.Add(x.Status.speed, x);
+        }
+    }
+
+    public void startMove()
+    {
+        if (speedList.Count == 0)
+        {
+            goNextPhase();
+            return;
+        }
+        Unit unit = speedList.Values[speedList.Count - 1];
+        speedList.RemoveAt(speedList.Count - 1);
+        unit.isTurn = true;
+    }
+
     //load level data from LevelDesign class and place all units.
     public void setupBoard(levels level)
     {
@@ -102,9 +124,12 @@ public class LevelController : MonoBehaviour
             aliveUnits.Add(newEnemy.GetComponent<Unit>());
         }
 
+        caculateSpeed();
+
         this.level = (int)level;
         roundCounter = 1;
         roundStatus = RoundStatus.move;
+        startMove();
     }
 
     //switch phases
@@ -322,6 +347,7 @@ public class LevelController : MonoBehaviour
     {
         setupBoard(levels.level1);
         onAttackStartEvent += updateAttacks;
+        onMoveStartEvent += caculateSpeed;
     }
 
     void Update()

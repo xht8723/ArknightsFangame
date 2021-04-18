@@ -26,6 +26,7 @@ public abstract class Unit : MonoBehaviour
 
     public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
     public bool isMoving = false;
+    public bool isTurn = false;
 
     Camera maincamera;
     public GameObject sprite;
@@ -81,12 +82,11 @@ public abstract class Unit : MonoBehaviour
     //click and drag to move character or when in special phase to active skills;
     protected virtual void OnMouseDown()
     {
-        if (!isMoving && LevelController.levelController.roundStatus.Equals(RoundStatus.move) && !hasMoved)
+        if (!isMoving && LevelController.levelController.roundStatus.Equals(RoundStatus.move) && !hasMoved && isTurn)
         {
             onUpdateEvent -= snapToFloor;
             onUpdateEvent += move;
             isMoving = true;
-            hasMoved = true;
             MoveEvent();
         }
     }
@@ -111,6 +111,7 @@ public abstract class Unit : MonoBehaviour
     public virtual void resetFlags()
     {
         hasMoved = false;
+        isTurn = false;
         hasAttacked = false;
         cd--;
     }
@@ -149,6 +150,7 @@ public abstract class Unit : MonoBehaviour
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
                 isMoving = false;
+                isTurn = false;
                 resrictionVisual();
                 traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
                 return;
@@ -197,6 +199,7 @@ public abstract class Unit : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 onUpdateEvent -= chooseFacing;
+                LevelController.levelController.startMove();
             }
         }
     }
@@ -363,6 +366,7 @@ public abstract class Unit : MonoBehaviour
 
         this.lastPosition = currentPosition;
         this.currentPosition = closestGrid;
+        hasMoved = true;
     }
 
     protected virtual void moveAway(Unit unit)
@@ -386,6 +390,7 @@ public abstract class Unit : MonoBehaviour
         this.lastPosition = currentPosition;
         System.Random rnd = new System.Random();
         this.currentPosition = fartherestGrid[rnd.Next(fartherestGrid.Count)];
+        hasMoved = true;
     }
 
 

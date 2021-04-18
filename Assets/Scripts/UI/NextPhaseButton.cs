@@ -10,12 +10,16 @@ public class NextPhaseButton : MonoBehaviour
     public void nextPhase()
     {
         LevelController.levelController.goNextPhase();
-        phaseStatus.text = LevelController.levelController.roundStatus.ToString();
     }
 
     public void attack()
     {
         LevelController.levelController.excecuteAttacks();
+    }
+
+    private void FixedUpdate()
+    {
+        phaseStatus.text = LevelController.levelController.roundStatus.ToString();
     }
 
     private void Start()
