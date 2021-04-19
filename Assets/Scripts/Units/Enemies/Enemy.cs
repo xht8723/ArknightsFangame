@@ -92,7 +92,37 @@ public abstract class Enemy : Unit
             isTurn = false;
         }
 
+        chooseFacing(closestAlly);
+
         LevelController.levelController.startMove();
+    }
+
+    protected virtual void chooseFacing(Unit targetAlly)
+    {
+        Vector2 thisV = new Vector2(0, 1);
+        Vector2 hitV = new Vector2(targetAlly.transform.position.x - transform.position.x, targetAlly.transform.position.z - transform.position.z);
+        float angle = Vector2.Angle(thisV, hitV);
+
+        if(angle >= 0f && angle <= 90f)
+        {
+            sprite.GetComponent<SpriteRenderer>().flipX = false;
+            Status.facing = facing.right;
+        }else if(angle > 90f && angle <= 180f)
+        {
+            if (targetAlly.transform.position.x - transform.position.x >= 0)
+            {
+                Status.facing = facing.down;
+            }
+            else
+            {
+                Status.facing = facing.up;
+            }
+        }
+        else
+        {
+            sprite.GetComponent<SpriteRenderer>().flipX = true;
+            Status.facing = facing.left;
+        }
     }
 
     protected void canMove()

@@ -28,6 +28,12 @@ public abstract class Unit : MonoBehaviour
     public bool isMoving = false;
     public bool isTurn = false;
 
+    public GameObject upArrow;
+    public GameObject downArrow;
+    public GameObject leftArrow;
+    public GameObject rightArrow;
+
+
     Camera maincamera;
     public GameObject sprite;
 
@@ -149,8 +155,8 @@ public abstract class Unit : MonoBehaviour
                 }
                 onUpdateEvent -= move;
                 onUpdateEvent += snapToFloor;
-                isMoving = false;
                 isTurn = false;
+                isMoving = false;
                 resrictionVisual();
                 traceViableGrids(BattleGridsGen.battleGridsGen.gridMatrix);
                 return;
@@ -177,20 +183,36 @@ public abstract class Unit : MonoBehaviour
             float angle = Vector2.Angle(thisV, hitV);
             switch (angle) {
                 case 0f:
+                    leftArrow.SetActive(false);
+                    upArrow.SetActive(false);
+                    downArrow.SetActive(false);
+                    rightArrow.SetActive(true);
                     sprite.GetComponent<SpriteRenderer>().flipX = false;
                     Status.facing = facing.right;
                     break;
                 case 180f:
+                    leftArrow.SetActive(true);
+                    upArrow.SetActive(false);
+                    downArrow.SetActive(false);
+                    rightArrow.SetActive(false);
                     sprite.GetComponent<SpriteRenderer>().flipX = true;
                     Status.facing = facing.left;
                     break;
                 case 90f:
                     if(hit.transform.position.x - transform.position.x >= 0)
                     {
+                        leftArrow.SetActive(false);
+                        upArrow.SetActive(false);
+                        downArrow.SetActive(true);
+                        rightArrow.SetActive(false);
                         Status.facing = facing.down;
                     }
                     else
                     {
+                        leftArrow.SetActive(false);
+                        upArrow.SetActive(true);
+                        downArrow.SetActive(false);
+                        rightArrow.SetActive(false);
                         Status.facing = facing.up;
                     }
                     break;
@@ -199,6 +221,10 @@ public abstract class Unit : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 onUpdateEvent -= chooseFacing;
+                leftArrow.SetActive(false);
+                upArrow.SetActive(false);
+                downArrow.SetActive(false);
+                rightArrow.SetActive(false);
                 LevelController.levelController.startMove();
             }
         }

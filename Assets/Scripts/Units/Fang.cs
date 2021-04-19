@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public class Fang : Unit
-{
+{   
     //depolys character onto board.
     public override GameObject deploy()
     {
@@ -15,12 +15,20 @@ public class Fang : Unit
 
     protected override void OnMouseOver()
     {
-        return;
+        if (isMoving) { return; }
+        upArrow.SetActive(true);
+        downArrow.SetActive(true);
+        leftArrow.SetActive(true);
+        rightArrow.SetActive(true);
     }
 
     protected override void OnMouseExit()
     {
-        return;
+        if (isMoving) { return; }
+        upArrow.SetActive(false);
+        downArrow.SetActive(false);
+        leftArrow.SetActive(false);
+        rightArrow.SetActive(false);
     }
 
     protected override void OnMouseDown()
