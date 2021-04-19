@@ -23,17 +23,16 @@ public abstract class Unit : MonoBehaviour
     public bool hasSpecial = false;
     public GameObject currentPosition;
     public GameObject lastPosition;
-
-    public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
     public bool isMoving = false;
     public bool isTurn = false;
+    public List<GameObject> viableRoutes;//stores vaible grids that this unit can move to.
 
+    //some referecens for unity editor. do not change.
+    [Header("UIs")]
     public GameObject upArrow;
     public GameObject downArrow;
     public GameObject leftArrow;
     public GameObject rightArrow;
-
-
     Camera maincamera;
     public GameObject sprite;
 
