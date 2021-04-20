@@ -95,7 +95,6 @@ public class LevelController : MonoBehaviour
     public void caculateSpeed()
     {
         speedList.Clear();
-        Debug.Log(speedList.Count);
         foreach(Unit x in aliveUnits)
         {
             speedList.Add(x.Status.speed, x);
