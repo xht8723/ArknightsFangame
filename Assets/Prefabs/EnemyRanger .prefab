@@ -64,14 +64,15 @@ MonoBehaviour:
   hasSpecial: 0
   currentPosition: {fileID: 0}
   lastPosition: {fileID: 0}
-  viableRoutes: []
   isMoving: 0
   isTurn: 0
+  viableRoutes: []
   upArrow: {fileID: 0}
   downArrow: {fileID: 0}
   leftArrow: {fileID: 0}
   rightArrow: {fileID: 0}
   sprite: {fileID: 3715707163432024206}
+  indicatorFloor: {fileID: 0}
   isRanged: 1
   visionRange: 10
 --- !u!114 &5279042975609236172

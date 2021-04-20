@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Reflection;
+using UnityEngine.UI;
 
 //enum for different phase of a round.
 public enum RoundStatus{ 
@@ -15,7 +16,13 @@ public enum RoundStatus{
 public class LevelController : MonoBehaviour
 {
     public static LevelController levelController;//make this class an unique object in unity.
+    [Header("UI references")]
+    public GameObject UI;
+    public GameObject phasePlate_move;
+    public GameObject phasePlate_attack;
+    public GameObject phasePlate_special;
 
+    [Header("Unit prefabs")]
     //prefabs for characters.
     public GameObject Fang;
     public GameObject EnemyRanger;
@@ -33,7 +40,15 @@ public class LevelController : MonoBehaviour
     public event Action onAttackStartEvent;
     public event Action onSpecialPhaseEndEvent;
     public event Action onSpecialPhaseStartEvent;
+    public event Action onUpdateEvent;
 
+    public void UpdateEvent()
+    {
+        if(onUpdateEvent != null)
+        {
+            onUpdateEvent();
+        }
+    }
     public void MoveEndEvent()
     {
         if (onMoveEndEvent != null)
@@ -41,7 +56,6 @@ public class LevelController : MonoBehaviour
             onMoveEndEvent();
         }
     }
-
     public void MoveStartEvent()
     {
         if (onMoveStartEvent != null)
@@ -49,7 +63,6 @@ public class LevelController : MonoBehaviour
             onMoveStartEvent();
         }
     }
-
     public void AttackEndEvent()
     {
         if (onAttackEndEvent != null)
@@ -57,8 +70,6 @@ public class LevelController : MonoBehaviour
             onAttackEndEvent();
         }
     }
-
-
     public void AttackStartEvent()
     {
         if (onAttackStartEvent != null)
@@ -66,8 +77,6 @@ public class LevelController : MonoBehaviour
             onAttackStartEvent();
         }
     }
-
-
     public void SpecialPhaseEndEvent()
     {
         if (onSpecialPhaseEndEvent != null)
@@ -75,8 +84,6 @@ public class LevelController : MonoBehaviour
             onSpecialPhaseEndEvent();
         }
     }
-
-
     public void SpecialPhaseStartEvent()
     {
         if (onSpecialPhaseStartEvent != null)
@@ -88,14 +95,20 @@ public class LevelController : MonoBehaviour
     public void caculateSpeed()
     {
         speedList.Clear();
+        Debug.Log(speedList.Count);
         foreach(Unit x in aliveUnits)
         {
             speedList.Add(x.Status.speed, x);
         }
+        startMove();
     }
 
     public void startMove()
     {
+        if (!roundStatus.Equals(RoundStatus.move))
+        {
+            return;
+        }
         if (speedList.Count == 0)
         {
             goNextPhase();
@@ -124,12 +137,11 @@ public class LevelController : MonoBehaviour
             aliveUnits.Add(newEnemy.GetComponent<Unit>());
         }
 
-        caculateSpeed();
-
         this.level = (int)level;
         roundCounter = 1;
         roundStatus = RoundStatus.move;
-        startMove();
+        onUpdateEvent += playPhaseChangeAnimation;
+        caculateSpeed();
     }
 
     //switch phases
@@ -140,12 +152,14 @@ public class LevelController : MonoBehaviour
             case RoundStatus.move:
                 MoveEndEvent();
                 roundStatus = RoundStatus.attack;
+                onUpdateEvent += playPhaseChangeAnimation;
                 AttackStartEvent();
                 return;
 
             case RoundStatus.attack:
                 AttackEndEvent();
                 roundStatus = RoundStatus.specialPhase;
+                onUpdateEvent += playPhaseChangeAnimation;
                 SpecialPhaseStartEvent();
                 return;
 
@@ -153,12 +167,92 @@ public class LevelController : MonoBehaviour
                 SpecialPhaseEndEvent();
                 roundCounter++;
                 roundStatus = RoundStatus.move;
-                foreach(Unit u in aliveUnits)
+                onUpdateEvent += playPhaseChangeAnimation;
+                foreach (Unit u in aliveUnits)
                 {
                     u.resetFlags();
                 }
                 MoveStartEvent();
                 return;
+        }
+    }
+
+    public void playPhaseChangeAnimation()
+    {
+        switch (roundStatus)
+        {
+            case RoundStatus.move:
+                if(phasePlate_move.GetComponent<Image>().fillAmount >= 1f)
+                {
+                    onUpdateEvent -= playPhaseChangeAnimation;
+                    onUpdateEvent += stopPhaseChangeAnimation;
+                    return;
+                }
+                phasePlate_move.SetActive(true);
+                phasePlate_move.GetComponent<Image>().fillOrigin = 0;
+                phasePlate_move.GetComponent<Image>().fillAmount += Time.deltaTime / 0.5f;
+                break;
+            case RoundStatus.attack:
+                if (phasePlate_attack.GetComponent<Image>().fillAmount >= 1f)
+                {
+                    onUpdateEvent -= playPhaseChangeAnimation;
+                    onUpdateEvent += stopPhaseChangeAnimation;
+                    return;
+                }
+                phasePlate_attack.SetActive(true);
+                phasePlate_attack.GetComponent<Image>().fillOrigin = 0;
+                phasePlate_attack.GetComponent<Image>().fillAmount += Time.deltaTime / 0.5f;
+                break;
+
+            case RoundStatus.specialPhase:
+                if (phasePlate_special.GetComponent<Image>().fillAmount >= 1f)
+                {
+                    onUpdateEvent -= playPhaseChangeAnimation;
+                    onUpdateEvent += stopPhaseChangeAnimation;
+                    return;
+                }
+                phasePlate_special.SetActive(true);
+                phasePlate_special.GetComponent<Image>().fillOrigin = 0;
+                phasePlate_special.GetComponent<Image>().fillAmount += Time.deltaTime / 0.5f;
+                break;
+        }
+    }
+
+    public void stopPhaseChangeAnimation()
+    {
+        switch (roundStatus)
+        {
+            case RoundStatus.move:
+                if (phasePlate_move.GetComponent<Image>().fillAmount <= 0f)
+                {
+                    phasePlate_move.SetActive(false);
+                    onUpdateEvent -= stopPhaseChangeAnimation;
+                    return;
+                }
+                phasePlate_move.GetComponent<Image>().fillOrigin = 1;
+                phasePlate_move.GetComponent<Image>().fillAmount -= Time.deltaTime / 0.5f;
+                break;
+            case RoundStatus.attack:
+                if (phasePlate_attack.GetComponent<Image>().fillAmount <= 0f)
+                {
+                    phasePlate_attack.SetActive(false);
+                    onUpdateEvent -= stopPhaseChangeAnimation;
+                    return;
+                }
+                phasePlate_attack.GetComponent<Image>().fillOrigin = 1;
+                phasePlate_attack.GetComponent<Image>().fillAmount -= Time.deltaTime / 0.5f;
+                break;
+
+            case RoundStatus.specialPhase:
+                if (phasePlate_special.GetComponent<Image>().fillAmount <= 0f)
+                {
+                    phasePlate_special.SetActive(false);
+                    onUpdateEvent -= stopPhaseChangeAnimation;
+                    return;
+                }
+                phasePlate_special.GetComponent<Image>().fillOrigin = 1;
+                phasePlate_special.GetComponent<Image>().fillAmount -= Time.deltaTime / 0.5f;
+                break;
         }
     }
 
@@ -352,7 +446,7 @@ public class LevelController : MonoBehaviour
 
     void Update()
     {
-
+        UpdateEvent();
     }
 }
 

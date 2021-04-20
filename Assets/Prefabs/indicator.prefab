@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5345118290750438976}
   - component: {fileID: 3778965022320335057}
   - component: {fileID: 8448629404031572100}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: enemyPlane
-  m_TagString: floor
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -139,14 +139,15 @@ MonoBehaviour:
   hasSpecial: 0
   currentPosition: {fileID: 0}
   lastPosition: {fileID: 0}
-  viableRoutes: []
   isMoving: 0
   isTurn: 0
+  viableRoutes: []
   upArrow: {fileID: 6605184217959865872}
   downArrow: {fileID: 643449004591588496}
   leftArrow: {fileID: 5410204971487451718}
   rightArrow: {fileID: 4871988116606802273}
   sprite: {fileID: 9041027619568035002}
+  indicatorFloor: {fileID: 2489505028180426284, guid: 72da8ebc92c179d418f29cda8ef6cd79, type: 3}
 --- !u!65 &4703715290089673146
 BoxCollider:
   m_ObjectHideFlags: 0

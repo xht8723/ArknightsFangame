@@ -81,13 +81,13 @@ public abstract class Enemy : Unit
 
         if (isRanged)
         {
-            moveAway(closestAlly);
+            startMoveAway(closestAlly);
             MoveEvent();
             isTurn = false;
         }
         else
         {
-            moveToward(closestAlly);
+            startMoveToward(closestAlly);
             MoveEvent();
             isTurn = false;
         }

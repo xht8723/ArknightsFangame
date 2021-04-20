@@ -35,6 +35,7 @@ public abstract class Unit : MonoBehaviour
     public GameObject rightArrow;
     Camera maincamera;
     public GameObject sprite;
+    public GameObject indicatorFloor;
 
     public void killEvent()
     {
@@ -236,18 +237,20 @@ public abstract class Unit : MonoBehaviour
     //change floor color to indicate legal movement. only used for controlleable units(allies)
     protected virtual void resrictionVisual()
     {
+        GameObject tempHolder = GameObject.Find("tempHolder");
         if (isMoving)
         {
             foreach(GameObject x in viableRoutes)
             {
-                x.GetComponent<Renderer>().material.color = Color.white;
+                GameObject indicator = Instantiate<GameObject>(indicatorFloor, tempHolder.transform);
+                indicator.transform.position = x.transform.position + new Vector3(0, 0.01f, 0);
             }
         }
         else
         {
-            foreach (GameObject x in viableRoutes)
+            foreach(Transform x in tempHolder.transform)
             {
-                x.GetComponent<Renderer>().material.color = Color.black;
+                Destroy(x.gameObject);
             }
         }
         return;
@@ -257,11 +260,19 @@ public abstract class Unit : MonoBehaviour
     protected virtual bool illegalMove(RaycastHit ray)
     {
         GameObject theGrid = ray.transform.gameObject;
-        if(viableRoutes.Contains(theGrid))
+        if(!viableRoutes.Contains(theGrid))
         {
-            return false;
+            return true;
         }
-        return true;
+
+        foreach(Unit x in LevelController.levelController.aliveUnits)
+        {
+            if(x.currentPosition == theGrid)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     //caculate viable grids for movement. updates after every movement.
@@ -370,12 +381,11 @@ public abstract class Unit : MonoBehaviour
         return Mathf.Abs(unit1P[0] - unit2P[0]) + Mathf.Abs(unit1P[1] - unit2P[1]);
     }
 
-    //move toward a unit.
-    protected virtual void moveToward(Unit unit)
+    protected virtual GameObject caculateClosestGridTo(Unit unit)
     {
         int distance = BattleGridsGen.battleGridsGen.col * BattleGridsGen.battleGridsGen.row;
         GameObject closestGrid = null;
-        foreach(GameObject x in viableRoutes)
+        foreach (GameObject x in viableRoutes)
         {
             int temp = calculateDistance(unit.currentPosition, x);
             if (temp < distance && temp != 0)
@@ -388,20 +398,17 @@ public abstract class Unit : MonoBehaviour
                 continue;
             }
         }
-
-        this.lastPosition = currentPosition;
-        this.currentPosition = closestGrid;
-        hasMoved = true;
+        return closestGrid;
     }
 
-    protected virtual void moveAway(Unit unit)
+    protected virtual GameObject caculateFarthestGridTo(Unit unit)
     {
         int distance = 0;
         List<GameObject> fartherestGrid = new List<GameObject>();
-        foreach(GameObject x in viableRoutes)
+        foreach (GameObject x in viableRoutes)
         {
             int temp = calculateDistance(unit.currentPosition, x);
-            if(temp >= distance && temp != 0)
+            if (temp >= distance && temp != 0)
             {
                 fartherestGrid.Add(x);
                 distance = temp;
@@ -411,11 +418,43 @@ public abstract class Unit : MonoBehaviour
                 continue;
             }
         }
-
-        this.lastPosition = currentPosition;
         System.Random rnd = new System.Random();
-        this.currentPosition = fartherestGrid[rnd.Next(fartherestGrid.Count)];
-        hasMoved = true;
+        return fartherestGrid[rnd.Next(fartherestGrid.Count)];
+    }
+
+    float timer = 0f;
+    //move toward a unit.
+    protected virtual void moveTowardCurr()
+    {
+        timer += Time.deltaTime / 1f;
+        transform.position = Vector3.Lerp(lastPosition.transform.position, currentPosition.transform.position, timer);
+        if(timer >= 1f)
+        {
+            sprite.GetComponent<Animator>().SetBool("isMoving", false);
+            onUpdateEvent -= moveTowardCurr;
+            onUpdateEvent += snapToFloor;
+            hasMoved = true;
+        }
+    }
+
+    protected virtual void startMoveToward(Unit unit)
+    {
+        onUpdateEvent -= snapToFloor;
+        lastPosition = currentPosition;
+        currentPosition = caculateClosestGridTo(unit);
+        sprite.GetComponent<Animator>().SetBool("isMoving", true);
+        timer = 0f;
+        onUpdateEvent += moveTowardCurr;
+    }
+
+    protected virtual void startMoveAway(Unit unit)
+    {
+        onUpdateEvent -= snapToFloor;
+        lastPosition = currentPosition;
+        currentPosition = caculateFarthestGridTo(unit);
+        sprite.GetComponent<Animator>().SetBool("isMoving", true);
+        timer = 0f;
+        onUpdateEvent += moveTowardCurr;
     }
 
 
