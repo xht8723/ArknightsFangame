@@ -144,6 +144,7 @@ public class LevelController : MonoBehaviour
         caculateSpeed();
     }
 
+    float time = 0;
     //switch phases
     public void goNextPhase()
     {
@@ -152,6 +153,8 @@ public class LevelController : MonoBehaviour
             case RoundStatus.move:
                 MoveEndEvent();
                 roundStatus = RoundStatus.attack;
+                time = 0;
+                Time.timeScale = 0;
                 onUpdateEvent += playPhaseChangeAnimation;
                 AttackStartEvent();
                 return;
@@ -159,6 +162,8 @@ public class LevelController : MonoBehaviour
             case RoundStatus.attack:
                 AttackEndEvent();
                 roundStatus = RoundStatus.specialPhase;
+                time = 0;
+                Time.timeScale = 0;
                 onUpdateEvent += playPhaseChangeAnimation;
                 SpecialPhaseStartEvent();
                 return;
@@ -167,6 +172,8 @@ public class LevelController : MonoBehaviour
                 SpecialPhaseEndEvent();
                 roundCounter++;
                 roundStatus = RoundStatus.move;
+                time = 0;
+                Time.timeScale = 0;
                 onUpdateEvent += playPhaseChangeAnimation;
                 foreach (Unit u in aliveUnits)
                 {
@@ -184,36 +191,57 @@ public class LevelController : MonoBehaviour
             case RoundStatus.move:
                 if(phasePlate_move.GetComponent<Image>().fillAmount >= 1f)
                 {
-                    onUpdateEvent -= playPhaseChangeAnimation;
-                    onUpdateEvent += stopPhaseChangeAnimation;
+                    if(time <= 1f)
+                    {
+                        time += Time.unscaledDeltaTime;
+                    }
+                    else
+                    {
+                        onUpdateEvent -= playPhaseChangeAnimation;
+                        onUpdateEvent += stopPhaseChangeAnimation;
+                    }
                     return;
                 }
                 phasePlate_move.SetActive(true);
                 phasePlate_move.GetComponent<Image>().fillOrigin = 0;
-                phasePlate_move.GetComponent<Image>().fillAmount += Time.deltaTime / 0.5f;
+                phasePlate_move.GetComponent<Image>().fillAmount += Time.unscaledDeltaTime / 0.5f;
                 break;
             case RoundStatus.attack:
                 if (phasePlate_attack.GetComponent<Image>().fillAmount >= 1f)
                 {
-                    onUpdateEvent -= playPhaseChangeAnimation;
-                    onUpdateEvent += stopPhaseChangeAnimation;
+                    if (time <= 1f)
+                    {
+                        time += Time.unscaledDeltaTime;
+                    }
+                    else
+                    {
+                        onUpdateEvent -= playPhaseChangeAnimation;
+                        onUpdateEvent += stopPhaseChangeAnimation;
+                    }
                     return;
                 }
                 phasePlate_attack.SetActive(true);
                 phasePlate_attack.GetComponent<Image>().fillOrigin = 0;
-                phasePlate_attack.GetComponent<Image>().fillAmount += Time.deltaTime / 0.5f;
+                phasePlate_attack.GetComponent<Image>().fillAmount += Time.unscaledDeltaTime / 0.5f;
                 break;
 
             case RoundStatus.specialPhase:
                 if (phasePlate_special.GetComponent<Image>().fillAmount >= 1f)
                 {
-                    onUpdateEvent -= playPhaseChangeAnimation;
-                    onUpdateEvent += stopPhaseChangeAnimation;
+                    if (time <= 1f)
+                    {
+                        time += Time.unscaledDeltaTime;
+                    }
+                    else
+                    {
+                        onUpdateEvent -= playPhaseChangeAnimation;
+                        onUpdateEvent += stopPhaseChangeAnimation;
+                    }
                     return;
                 }
                 phasePlate_special.SetActive(true);
                 phasePlate_special.GetComponent<Image>().fillOrigin = 0;
-                phasePlate_special.GetComponent<Image>().fillAmount += Time.deltaTime / 0.5f;
+                phasePlate_special.GetComponent<Image>().fillAmount += Time.unscaledDeltaTime / 0.5f;
                 break;
         }
     }
@@ -226,32 +254,36 @@ public class LevelController : MonoBehaviour
                 if (phasePlate_move.GetComponent<Image>().fillAmount <= 0f)
                 {
                     phasePlate_move.SetActive(false);
+                    Time.timeScale = 1;
                     onUpdateEvent -= stopPhaseChangeAnimation;
                     return;
                 }
                 phasePlate_move.GetComponent<Image>().fillOrigin = 1;
-                phasePlate_move.GetComponent<Image>().fillAmount -= Time.deltaTime / 0.5f;
+                phasePlate_move.GetComponent<Image>().fillAmount -= Time.unscaledDeltaTime / 0.5f;
                 break;
+
             case RoundStatus.attack:
                 if (phasePlate_attack.GetComponent<Image>().fillAmount <= 0f)
                 {
                     phasePlate_attack.SetActive(false);
+                    Time.timeScale = 1;
                     onUpdateEvent -= stopPhaseChangeAnimation;
                     return;
                 }
                 phasePlate_attack.GetComponent<Image>().fillOrigin = 1;
-                phasePlate_attack.GetComponent<Image>().fillAmount -= Time.deltaTime / 0.5f;
+                phasePlate_attack.GetComponent<Image>().fillAmount -= Time.unscaledDeltaTime / 0.5f;
                 break;
 
             case RoundStatus.specialPhase:
                 if (phasePlate_special.GetComponent<Image>().fillAmount <= 0f)
                 {
                     phasePlate_special.SetActive(false);
+                    Time.timeScale = 1;
                     onUpdateEvent -= stopPhaseChangeAnimation;
                     return;
                 }
                 phasePlate_special.GetComponent<Image>().fillOrigin = 1;
-                phasePlate_special.GetComponent<Image>().fillAmount -= Time.deltaTime / 0.5f;
+                phasePlate_special.GetComponent<Image>().fillAmount -= Time.unscaledDeltaTime / 0.5f;
                 break;
         }
     }
