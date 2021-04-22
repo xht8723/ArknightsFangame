@@ -427,13 +427,21 @@ public abstract class Unit : MonoBehaviour
     protected virtual void moveTowardCurr()
     {
         timer += Time.deltaTime / 1f;
-        if(timer >= 0.1f)
+        if(timer >= 0.3f)
         {
             transform.position = Vector3.Lerp(lastPosition.transform.position, currentPosition.transform.position, timer);
         }
-        if(timer >= 1.1f)
+        if(timer >= 1.3f)
         {
-            sprite.GetComponent<Animator>().SetBool("isMoving", false);
+            try
+            {
+                sprite.GetComponent<Animator>().SetBool("isMoving", false);
+            }
+            catch
+            {
+                Debug.LogWarning("No sprite");
+            }
+
             onUpdateEvent -= moveTowardCurr;
             onUpdateEvent += snapToFloor;
             hasMoved = true;
@@ -446,7 +454,15 @@ public abstract class Unit : MonoBehaviour
         onUpdateEvent -= snapToFloor;
         lastPosition = currentPosition;
         currentPosition = caculateClosestGridTo(unit);
-        sprite.GetComponent<Animator>().SetBool("isMoving", true);
+        try
+        {
+            sprite.GetComponent<Animator>().SetBool("isMoving", true);
+        }
+        catch
+        {
+            Debug.LogWarning("No sprites");
+        }
+
         timer = 0f;
         onUpdateEvent += moveTowardCurr;
     }

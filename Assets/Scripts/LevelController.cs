@@ -26,6 +26,7 @@ public class LevelController : MonoBehaviour
     //prefabs for characters.
     public GameObject Fang;
     public GameObject EnemyRanger;
+    public GameObject EnemyMelee;
 
     public int level;
     public int roundCounter;

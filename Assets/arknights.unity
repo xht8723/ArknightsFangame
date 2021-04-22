@@ -1198,6 +1198,7 @@ MonoBehaviour:
   phasePlate_special: {fileID: 823774259}
   Fang: {fileID: 1859555284072742733, guid: e1457c3cb377fb84fae5a13a705957a9, type: 3}
   EnemyRanger: {fileID: 2853363016101127189, guid: 6170aa2f6f81e4f4ea0433a80da5c131, type: 3}
+  EnemyMelee: {fileID: 7531205076269684590, guid: dd811a19dfd3aa44b9c5e8c22b5ff708, type: 3}
   level: 0
   roundCounter: 0
   roundStatus: 0

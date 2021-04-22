@@ -103,7 +103,15 @@ public abstract class Enemy : Unit
 
         if(angle >= 0f && angle <= 90f)
         {
-            sprite.GetComponent<SpriteRenderer>().flipX = false;
+            try
+            {
+                sprite.GetComponent<SpriteRenderer>().flipX = false;
+            }
+            catch
+            {
+                Debug.LogWarning("No sprites");
+            }
+            
             Status.facing = facing.right;
         }else if(angle > 90f && angle <= 180f)
         {

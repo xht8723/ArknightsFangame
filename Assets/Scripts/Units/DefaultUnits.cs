@@ -28,4 +28,16 @@ public static class DefaultUnits
         er.visionRange = 10;
         er.skills = new List<Skills>();
     }
+
+    public static void setEnemyMelee(GameObject EM)
+    {
+        EnemyMelee em = EM.GetComponent<EnemyMelee>();
+        em.isRanged = false;
+        em.Status = new status(false, 1000, 500, 123, 123, 9);
+        em.Status.facing = facing.up;
+        em.atkRange = 1;
+        em.moveRange = 2;
+        em.visionRange = 10;
+        em.skills = new List<Skills>();
+    }
 }

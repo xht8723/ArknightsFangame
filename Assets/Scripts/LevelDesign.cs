@@ -31,6 +31,8 @@ public static class LevelDesign
 {
     static Fang fang = LevelController.levelController.Fang.GetComponent<Fang>();
     static EnemyRanger enemy = LevelController.levelController.EnemyRanger.GetComponent<EnemyRanger>();
+    static EnemyMelee EM = LevelController.levelController.EnemyMelee.GetComponent<EnemyMelee>();
+
     static GameObject[,,] grid = BattleGridsGen.battleGridsGen.gridMatrix;
     static List<Unit> allies = new List<Unit>();
     static List<Unit> enemies = new List<Unit>();
@@ -45,6 +47,9 @@ public static class LevelDesign
             DefaultUnits.setEnemyRanger(enemy.gameObject);
             enemy.currentPosition = grid[3, 3, 0];
             enemies.Add(enemy);
+            DefaultUnits.setEnemyMelee(EM.gameObject);
+            enemies.Add(EM);
+            EM.currentPosition = grid[1, 1, 0];
             return new LevelInfo(levels.level1, enemies, allies);
         }
 
