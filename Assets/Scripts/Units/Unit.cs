@@ -427,13 +427,17 @@ public abstract class Unit : MonoBehaviour
     protected virtual void moveTowardCurr()
     {
         timer += Time.deltaTime / 1f;
-        transform.position = Vector3.Lerp(lastPosition.transform.position, currentPosition.transform.position, timer);
-        if(timer >= 1f)
+        if(timer >= 0.1f)
+        {
+            transform.position = Vector3.Lerp(lastPosition.transform.position, currentPosition.transform.position, timer);
+        }
+        if(timer >= 1.1f)
         {
             sprite.GetComponent<Animator>().SetBool("isMoving", false);
             onUpdateEvent -= moveTowardCurr;
             onUpdateEvent += snapToFloor;
             hasMoved = true;
+            LevelController.levelController.startMove();
         }
     }
 

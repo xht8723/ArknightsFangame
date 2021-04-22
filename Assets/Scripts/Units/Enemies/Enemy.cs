@@ -93,8 +93,6 @@ public abstract class Enemy : Unit
         }
 
         chooseFacing(closestAlly);
-
-        LevelController.levelController.startMove();
     }
 
     protected virtual void chooseFacing(Unit targetAlly)

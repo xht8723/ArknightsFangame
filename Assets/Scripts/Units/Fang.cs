@@ -33,7 +33,7 @@ public class Fang : Unit
 
     protected override void OnMouseDown()
     {
-        if (isTurn && !isMoving && (LevelController.levelController.roundStatus.Equals(RoundStatus.move) || LevelController.levelController.roundStatus.Equals(RoundStatus.specialPhase)) && !hasMoved)
+        if (!isMoving && (LevelController.levelController.roundStatus.Equals(RoundStatus.move) || LevelController.levelController.roundStatus.Equals(RoundStatus.specialPhase)) && !hasMoved)
         {
             onUpdateEvent -= snapToFloor;
             onUpdateEvent += move;
